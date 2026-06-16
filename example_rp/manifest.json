@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "example_rp",
+    "name": "example",
+    "uuid": "e5bda964-cf0f-4022-9ca4-063d50cbe5fb",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 18, 0]
+  },
+  "modules": [
+    {
+      "description": "example_rp",
+      "type": "resources",
+      "uuid": "0d259c97-7f11-4502-b60a-166b1c11a4b9",
+      "version": [0, 0, 1]
+    }
+  ]
+}

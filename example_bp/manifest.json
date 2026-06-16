@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "example_bp",
+    "name": "example",
+    "uuid": "f5e1300b-d527-4dac-9fce-2bcc59b47ef8",
+    "version": [0, 0, 1],
+    "min_engine_version": [1, 18, 0]
+  },
+  "modules": [
+    {
+      "description": "example_bp",
+      "type": "data",
+      "uuid": "6ab09399-948d-41f5-9102-aa41921f6360",
+      "version": [0, 0, 1]
+    }
+  ]
+}
