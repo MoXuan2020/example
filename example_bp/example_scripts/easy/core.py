@@ -115,6 +115,8 @@ class EventBus(object):
     dist = None
     server = None  # type: Server
     client = None  # type: Client
+    _api = None
+    _engine_comp_factory = None
 
     def register(self, instance):
         instance.MOD_NAME = self.MOD_NAME
@@ -128,3 +130,20 @@ class EventBus(object):
             destroy_server(instance)
         if self.dist == Dist.client:
             destroy_client(instance)
+
+    @property
+    def api(self):
+        if self._api is None:
+            if self.dist == Dist.server:
+                self._api = serverApi
+            if self.dist == Dist.client:
+                self._api = clientApi
+        if self._api is None:
+            raise AttributeError('This property must be registered before use')
+        return self._api
+
+    @property
+    def engine_comp_factory(self):
+        if self._engine_comp_factory is None:
+            self._engine_comp_factory = self.api.GetEngineCompFactory()
+        return self._engine_comp_factory
