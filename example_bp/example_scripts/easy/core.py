@@ -113,8 +113,8 @@ class EventBus(object):
         if self.dist == Dist.client:
             init_client(instance)
 
-    def __del__(self):
+    def unregister(self, instance):
         if self.dist == Dist.server:
-            destroy_server(self)
+            destroy_server(instance)
         if self.dist == Dist.client:
-            destroy_client(self)
+            destroy_client(instance)
