@@ -58,24 +58,24 @@ class ServerEvent(Event):
 
 def init_server(self):
     self.dist = Dist.server
-    self.server = serverApi.GetSystem(self.MOD_NAME, 'server') or serverApi.RegisterSystem(self.MOD_NAME, 'server', '%s.easy.core.Server' % self.__module__.split('.')[0])
+    self.system = serverApi.GetSystem(self.MOD_NAME, 'server') or serverApi.RegisterSystem(self.MOD_NAME, 'server', '%s.easy.core.Server' % self.__module__.split('.')[0])
     for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
         if not func.custom:
-            self.server.ListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
+            self.system.ListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
-            self.server.ListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
+            self.system.ListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
         else:
-            self.server.ListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
+            self.system.ListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
 
 
 def destroy_server(self):
     for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
         if not func.custom:
-            self.server.UnListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
+            self.system.UnListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
-            self.server.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
+            self.system.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
         else:
-            self.server.UnListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
+            self.system.UnListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
 
 
 class Client(clientApi.GetClientSystemCls()):
@@ -90,33 +90,30 @@ class ClientEvent(Event):
 
 def init_client(self):
     self.dist = Dist.client
-    self.client = clientApi.GetSystem(self.MOD_NAME, 'client') or clientApi.RegisterSystem(self.MOD_NAME, 'client', '%s.easy.core.Client' % self.__module__.split('.')[0])
+    self.system = clientApi.GetSystem(self.MOD_NAME, 'client') or clientApi.RegisterSystem(self.MOD_NAME, 'client', '%s.easy.core.Client' % self.__module__.split('.')[0])
     for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
         if not func.custom:
-            self.client.ListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
+            self.system.ListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
-            self.client.ListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
+            self.system.ListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
         else:
-            self.client.ListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
+            self.system.ListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
 
 
 def destroy_client(self):
     for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
         if not func.custom:
-            self.client.UnListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
+            self.system.UnListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
-            self.client.UnListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
+            self.system.UnListenForEvent(self.MOD_NAME, 'server', func.name, self, func, func.priority)
         else:
-            self.client.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
+            self.system.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
 
 
 class EventBus(object):
     MOD_NAME = None
     dist = None
-    server = None  # type: Server
-    client = None  # type: Client
-    _api = None
-    _engine_comp_factory = None
+    system = None
 
     def register(self, instance):
         instance.MOD_NAME = self.MOD_NAME
@@ -130,20 +127,3 @@ class EventBus(object):
             destroy_server(instance)
         if self.dist == Dist.client:
             destroy_client(instance)
-
-    @property
-    def api(self):
-        if self._api is None:
-            if self.dist == Dist.server:
-                self._api = serverApi
-            if self.dist == Dist.client:
-                self._api = clientApi
-        if self._api is None:
-            raise AttributeError('This property must be registered before use')
-        return self._api
-
-    @property
-    def engine_comp_factory(self):
-        if self._engine_comp_factory is None:
-            self._engine_comp_factory = self.api.GetEngineCompFactory()
-        return self._engine_comp_factory
