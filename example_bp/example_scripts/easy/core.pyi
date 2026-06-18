@@ -5,6 +5,11 @@ from mod.server.system.serverSystem import ServerSystem
 from typing import Callable, List, Optional, Type, Union
 
 
+class Dist:
+    server: int
+    client: int
+
+
 class Easy(Mod):
     name: str
     version: Optional[str]
@@ -40,4 +45,5 @@ class ClientEvent(Event):
 
 
 class EventBus:
+    dist: int
     system: Union[ServerSystem, ClientSystem]
