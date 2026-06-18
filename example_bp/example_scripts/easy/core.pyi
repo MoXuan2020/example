@@ -45,5 +45,12 @@ class ClientEvent(Event):
 
 
 class EventBus:
+    MOD_NAME: str
     dist: int
     system: Union[ServerSystem, ClientSystem]
+
+    def register(self, instance: EventBus) -> None:
+        ...
+
+    def unregister(self, instance: EventBus) -> None:
+        ...
