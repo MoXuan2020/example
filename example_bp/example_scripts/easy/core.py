@@ -53,7 +53,7 @@ class Server(serverApi.GetServerSystemCls()):
 class ServerEvent(Event):
 
     def __init__(self, name, priority=0, custom=False, broadcast=False):
-        Event.__init__(self, name, priority, custom, broadcast, [Dist.server])
+        super(ServerEvent, self).__init__(name, priority, custom, broadcast, [Dist.server])
 
 
 def init_server(self):
@@ -85,7 +85,7 @@ class Client(clientApi.GetClientSystemCls()):
 class ClientEvent(Event):
 
     def __init__(self, name, priority=0, custom=False, broadcast=False):
-        Event.__init__(self, name, priority, custom, broadcast, [Dist.client])
+        super(ClientEvent, self).__init__(name, priority, custom, broadcast, [Dist.client])
 
 
 def init_client(self):
