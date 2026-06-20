@@ -2,7 +2,7 @@
 from mod.client.system.clientSystem import ClientSystem
 from mod.common.mod import Mod
 from mod.server.system.serverSystem import ServerSystem
-from typing import Callable, List, Optional, Type
+from typing import Callable, List, Optional, Type, Union
 
 
 class Dist:
@@ -44,14 +44,10 @@ class ClientEvent(Event):
     ...
 
 
-class System(ServerSystem, ClientSystem):
-    ...
-
-
 class EventBus:
     MOD_NAME: str
     dist: int
-    system: System
+    system: Union[ServerSystem, ClientSystem]
 
     def register(self, instance: EventBus) -> None:
         ...
