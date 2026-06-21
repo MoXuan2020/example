@@ -2,6 +2,7 @@
 import mod.client.extraClientApi as clientApi
 import mod.server.extraServerApi as serverApi
 from mod.client.system.clientSystem import ClientSystem
+from mod.client.ui.CustomUIScreenProxy import CustomUIScreenProxy
 from mod.client.ui.screenNode import ScreenNode
 from mod.common.mod import Mod
 from mod.server.system.serverSystem import ServerSystem
@@ -52,6 +53,10 @@ class Client(ClientSystem):
 
 
 class ClientEvent(Event):
+    ...
+
+
+class Proxy(CustomUIScreenProxy):
     ...
 
 

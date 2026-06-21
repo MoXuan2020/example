@@ -108,6 +108,10 @@ def destroy_client(self):
             self.system.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
 
 
+class Proxy(clientApi.GetUIScreenProxyCls()):
+    pass
+
+
 class Screen(clientApi.GetScreenNodeCls()):
     pass
 
