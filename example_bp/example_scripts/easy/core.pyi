@@ -2,6 +2,7 @@
 import mod.client.extraClientApi as clientApi
 import mod.server.extraServerApi as serverApi
 from mod.client.system.clientSystem import ClientSystem
+from mod.client.ui.screenNode import ScreenNode
 from mod.common.mod import Mod
 from mod.server.system.serverSystem import ServerSystem
 from typing import Callable, List, Optional, Type, Union
@@ -71,3 +72,7 @@ class ServerEventBus(EventBus):
 
 class ClientEventBus(EventBus):
     system: Client
+
+
+class ScreenEventBus(ScreenNode, ClientEventBus):
+    ...

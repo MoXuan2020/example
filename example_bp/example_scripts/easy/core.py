@@ -132,3 +132,7 @@ class ServerEventBus(EventBus):
 
 class ClientEventBus(EventBus):
     pass
+
+
+class ScreenEventBus(clientApi.GetScreenNodeCls(), ClientEventBus):
+    pass
