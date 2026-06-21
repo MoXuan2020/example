@@ -63,3 +63,11 @@ class EventBus:
 
     def unregister(self, instance: EventBus) -> None:
         ...
+
+
+class ServerEventBus(EventBus):
+    system: Server
+
+
+class ClientEventBus(EventBus):
+    system: Client

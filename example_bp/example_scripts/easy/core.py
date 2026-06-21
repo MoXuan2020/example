@@ -124,3 +124,11 @@ class EventBus(object):
             destroy_server(instance)
         if isinstance(self.system, Client):
             destroy_client(instance)
+
+
+class ServerEventBus(EventBus):
+    pass
+
+
+class ClientEventBus(EventBus):
+    pass
