@@ -47,7 +47,7 @@ class Event(object):
 
 
 class Server(serverApi.GetServerSystemCls()):
-    pass
+    api = serverApi
 
 
 class ServerEvent(Event):
@@ -78,7 +78,7 @@ def destroy_server(self):
 
 
 class Client(clientApi.GetClientSystemCls()):
-    pass
+    api = clientApi
 
 
 class ClientEvent(Event):

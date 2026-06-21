@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import mod.client.extraClientApi as clientApi
+import mod.server.extraServerApi as serverApi
 from mod.client.system.clientSystem import ClientSystem
 from mod.common.mod import Mod
 from mod.server.system.serverSystem import ServerSystem
@@ -37,7 +39,7 @@ class Event:
 
 
 class Server(ServerSystem):
-    ...
+    api = serverApi
 
 
 class ServerEvent(Event):
@@ -45,7 +47,7 @@ class ServerEvent(Event):
 
 
 class Client(ClientSystem):
-    ...
+    api = clientApi
 
 
 class ClientEvent(Event):
