@@ -57,9 +57,8 @@ class ServerEvent(Event):
 
 
 def init_server(self):
-    self.dist = Dist.server
     self.system = serverApi.GetSystem(self.MOD_NAME, 'server') or serverApi.RegisterSystem(self.MOD_NAME, 'server', '%s.easy.core.Server' % self.__module__.split('.')[0])
-    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
+    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and Dist.server in getattr(member, 'dist', [])):
         if not func.custom:
             self.system.ListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
@@ -69,7 +68,7 @@ def init_server(self):
 
 
 def destroy_server(self):
-    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
+    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and Dist.server in getattr(member, 'dist', [])):
         if not func.custom:
             self.system.UnListenForEvent(serverApi.GetEngineNamespace(), serverApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
@@ -89,9 +88,8 @@ class ClientEvent(Event):
 
 
 def init_client(self):
-    self.dist = Dist.client
     self.system = clientApi.GetSystem(self.MOD_NAME, 'client') or clientApi.RegisterSystem(self.MOD_NAME, 'client', '%s.easy.core.Client' % self.__module__.split('.')[0])
-    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
+    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and Dist.client in getattr(member, 'dist', [])):
         if not func.custom:
             self.system.ListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
@@ -101,7 +99,7 @@ def init_client(self):
 
 
 def destroy_client(self):
-    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and self.dist in getattr(member, 'dist', [])):
+    for _, func in inspect.getmembers(self, lambda member: inspect.ismethod(member) and Dist.client in getattr(member, 'dist', [])):
         if not func.custom:
             self.system.UnListenForEvent(clientApi.GetEngineNamespace(), clientApi.GetEngineSystemName(), func.name, self, func, func.priority)
         elif not func.broadcast:
@@ -112,18 +110,17 @@ def destroy_client(self):
 
 class EventBus(object):
     MOD_NAME = None
-    dist = None
     system = None
 
     def register(self, instance):
         instance.MOD_NAME = self.MOD_NAME
-        if self.dist == Dist.server:
+        if isinstance(self.system, Server):
             init_server(instance)
-        if self.dist == Dist.client:
+        if isinstance(self.system, Client):
             init_client(instance)
 
     def unregister(self, instance):
-        if self.dist == Dist.server:
+        if isinstance(self.system, Server):
             destroy_server(instance)
-        if self.dist == Dist.client:
+        if isinstance(self.system, Client):
             destroy_client(instance)
