@@ -36,7 +36,15 @@ class Event:
         ...
 
 
+class Server(ServerSystem):
+    ...
+
+
 class ServerEvent(Event):
+    ...
+
+
+class Client(ClientSystem):
     ...
 
 
@@ -46,7 +54,7 @@ class ClientEvent(Event):
 
 class EventBus:
     MOD_NAME: str
-    system: Union[ServerSystem, ClientSystem]
+    system: Union[Server, Client]
 
     def register(self, instance: EventBus) -> None:
         ...
