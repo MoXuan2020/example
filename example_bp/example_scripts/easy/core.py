@@ -108,6 +108,10 @@ def destroy_client(self):
             self.system.UnListenForEvent(self.MOD_NAME, 'client', func.name, self, func, func.priority)
 
 
+class Screen(clientApi.GetScreenNodeCls()):
+    pass
+
+
 class EventBus(object):
     MOD_NAME = None
     system = None
@@ -131,8 +135,4 @@ class ServerEventBus(EventBus):
 
 
 class ClientEventBus(EventBus):
-    pass
-
-
-class ScreenEventBus(clientApi.GetScreenNodeCls(), ClientEventBus):
     pass

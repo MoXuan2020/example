@@ -55,6 +55,10 @@ class ClientEvent(Event):
     ...
 
 
+class Screen(ScreenNode):
+    ...
+
+
 class EventBus:
     MOD_NAME: str
     system: Union[Server, Client]
@@ -72,7 +76,3 @@ class ServerEventBus(EventBus):
 
 class ClientEventBus(EventBus):
     system: Client
-
-
-class ScreenEventBus(ScreenNode, ClientEventBus):
-    ...
